@@ -12,7 +12,8 @@ def get_task_by_id(id):
 
 @task_list_bp.get("")
 def get_all_tasks():
-    return get_models_with_filters(Task, request.args)
+    sort = request.args.get("sort", "asc")
+    return get_models_with_filters(Task, request.args, sort=sort)
 
 
 @task_list_bp.post("")
