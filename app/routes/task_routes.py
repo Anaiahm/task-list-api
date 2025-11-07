@@ -1,1 +1,42 @@
-from flask import Blueprint
+from flask import Blueprint, request, Response, session
+from app.models.task import Task
+from ..db import db
+from .routes_utilities import create_model, validate_model, get_models_with_filters
+
+task_list_bp = Blueprint("task_list", __name__, url_prefix="/tasks")
+
+@task_list_bp.get("/<id>")
+def get_task_by_id(id):
+    task = validate_model(Task, id)
+    return task.to_dict()
+
+@task_list_bp.get("")
+def get_all_tasks():
+    return get_models_with_filters(Task, request.args)
+
+
+@task_list_bp.post("")
+def create_new_task():
+    request_body = request.get_json()
+    return create_model(Task, request_body)
+
+@task_list_bp.put("/<id>")
+def replace_task(id):
+    task = validate_model(Task, id)
+    request_body = request.get_json()
+
+    task.title = request_body["title"]
+    task.description = request_body["description"]
+
+    db.session.commit()
+    return Response(status=204, mimetype="application/json")
+
+
+@task_list_bp.delete("/<id>")
+def delete_task(id):
+    task = validate_model(Task, id)
+    db.session.delete(task)
+    db.session.commit()
+
+    return Response(status=204, mimetype="application/json")
+
