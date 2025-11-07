@@ -2,6 +2,39 @@ from app.models.task import Task
 from app.db import db
 import pytest
 
+# My Added Tests
+def test_task_to_dict_no_is_complete():
+    #Arrange
+    new_task = Task(id = 1, title="Make My Bed", 
+                    description="Start the day off right!", 
+                    completed_at=None)
+    
+    #Act
+    task_dict = new_task.to_dict()
+
+    #Assert
+    assert len(task_dict) == 4
+    assert task_dict["id"] == 1
+    assert task_dict["title"] == "Make My Bed"
+    assert task_dict["description"] == "Start the day off right!"
+    assert task_dict["completed_at"] == None
+
+
+def test_task_instance_created_from_dict():
+    #Arrange
+    task_dict = {
+        "title": "Do Laundry",
+        "description": "Wash, Dry, Fold, Hang",
+        "completed_at": None
+    }
+    #Act
+    new_task = Task.from_dict(task_dict)
+    #Assert
+    assert new_task.title == "Do Laundry"
+    assert new_task.description == "Wash, Dry, Fold, Hang"
+    assert new_task.completed_at == None
+#
+
 @pytest.mark.skip(reason="No way to test this feature yet")
 def test_task_to_dict():
     #Arrange
