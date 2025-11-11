@@ -15,7 +15,7 @@ class Task(db.Model):
             "id": Task.id,
             "title": Task.title,
             "description": Task.description,
-            "is_complete": False
+            "is_complete": Task.completed_at is not None
         }
     
     def from_dict(dict):
