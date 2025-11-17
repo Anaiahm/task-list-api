@@ -24,3 +24,10 @@ class Task(db.Model):
         completed_at = None
         return Task(title=title, description=description, completed_at=completed_at)
     
+    # @classmethod
+    # def from_dict(cls, data):
+    #     return cls(
+    #         title=data.get("title"),
+    #         description=data.get("description"),
+    #         completed_at=data.get("completed_at"),
+    #     )
