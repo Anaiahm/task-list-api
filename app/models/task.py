@@ -34,7 +34,7 @@ class Task(db.Model):
     @classmethod
     def from_dict(cls, data):
         return cls(
-            title=data.get("title"),
-            description=data.get("description"),
+            title=data["title"],
+            description=data["description"],
             completed_at=data.get("completed_at"),
         )
