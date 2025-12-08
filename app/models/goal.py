@@ -19,5 +19,5 @@ class Goal(db.Model):
 
     @classmethod
     def from_dict(cls, data):
-        return cls(title=data.get("title"))
+        return cls(title=data["title"])
                 

@@ -4,6 +4,8 @@ from ..db import db
 from .routes_utilities import create_model, validate_model, get_models_with_filters
 from datetime import datetime
 
+
+
 task_list_bp = Blueprint("task_list", __name__, url_prefix="/tasks")
 
 @task_list_bp.get("/<id>")
@@ -45,10 +47,10 @@ def delete_task(id):
 @task_list_bp.patch("/<id>/mark_complete")
 def mark_task_complete(id):
     task = validate_model(Task, id)
-    task.to_dict()
+    # task.to_dict()
 
 
-    task.is_complete = True
+    # task.is_complete = True
     task.completed_at = datetime.now()
 
 
