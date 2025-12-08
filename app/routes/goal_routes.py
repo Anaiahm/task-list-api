@@ -38,12 +38,46 @@ def delete_goal(id):
 
     return Response(status=204, mimetype="application/json")
 
+# @goal_list_bp.post("/<id>/tasks")
+# def create_task_for_goal(id):
+#     goal = validate_model(Goal, id)
+#     request_body = request.get_json()
+#     task = Task.from_dict(request_body)
+#     task.goal_id = goal.id
+#     db.session.add(task)
+#     db.session.commit()
+#     return task.to_dict(), 201
 @goal_list_bp.post("/<id>/tasks")
 def create_task_for_goal(id):
     goal = validate_model(Goal, id)
     request_body = request.get_json()
-    task = Task.from_dict(request_body)
-    task.goal_id = goal.id
-    db.session.add(task)
+    task_ids = request_body.get("task_ids", [])
+
+    for task in goal.tasks:
+        task.goal_id = None
+
+    for task_id in task_ids:
+        task = validate_model(Task, task_id)
+        task.goal_id = goal.id
+
     db.session.commit()
-    return task.to_dict(), 201
+
+    return {
+        "id": goal.id,
+        "task_ids": task_ids
+    }, 200
+
+
+@goal_list_bp.get("/<id>/tasks")
+def get_tasks_for_specific_goal(id):
+    goal = validate_model(Goal, id)
+
+    tasks_response = []
+    for task in goal.tasks:
+        tasks_response.append(task.to_dict())
+
+    return {
+        "id": goal.id,
+        "title": goal.title,
+        "tasks": tasks_response
+    }, 200

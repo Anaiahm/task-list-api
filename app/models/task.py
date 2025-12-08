@@ -20,17 +20,12 @@ class Task(db.Model):
 
         return {
             "id": self.id,
+            "goal_id": self.goal_id,
             "title": self.title,
             "description": self.description,
             "is_complete": self.completed_at is not None
         }
-    
-    # def from_dict(dict):
-    #     title = dict["title"]
-    #     description = dict["description"]
-    #     completed_at = None
-    #     return Task(title=title, description=description, completed_at=completed_at)
-    
+
     @classmethod
     def from_dict(cls, data):
         return cls(
