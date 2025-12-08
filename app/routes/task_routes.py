@@ -11,7 +11,9 @@ task_list_bp = Blueprint("task_list", __name__, url_prefix="/tasks")
 @task_list_bp.get("/<id>")
 def get_task_by_id(id):
     task = validate_model(Task, id)
-    return task.to_dict()
+    response_body = task.to_dict()
+    return response_body
+
 
 @task_list_bp.get("")
 def get_all_tasks():
@@ -47,10 +49,6 @@ def delete_task(id):
 @task_list_bp.patch("/<id>/mark_complete")
 def mark_task_complete(id):
     task = validate_model(Task, id)
-    # task.to_dict()
-
-
-    # task.is_complete = True
     task.completed_at = datetime.now()
 
 
