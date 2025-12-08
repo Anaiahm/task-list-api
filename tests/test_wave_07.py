@@ -36,9 +36,9 @@ def test_route_utilities_validate_model_with_task_invalid_id(client, three_tasks
     response = e.value.get_response()
     assert response.status_code == 400
 
-    raise Exception("Complete test with an assertion about the response body")
+    # raise Exception("Complete test with an assertion about the response body")
     # *****************************************************************************
-    # ** Complete test with an assertion about the response body ****************
+    assert response.get_json() == {"message": "Task id (One) is invalid."}
     # *****************************************************************************
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -46,10 +46,11 @@ def test_route_utilities_validate_model_with_task_missing_id(client, three_tasks
     #Act & Assert
     with pytest.raises(HTTPException) as e:
         result_task = validate_model(Task, 4)
-    
-    raise Exception("Complete test with assertion status code and response body")
-    # *****************************************************************************
-    # **Complete test with assertion about status code response body***************
+    response = e.value.get_response()
+    # raise Exception("Complete test with assertion status code and response body")
+    # # *****************************************************************************
+    assert response.status_code == 404
+    assert response.get_json() == {"message": "Task with id (4) not found."}
     # *****************************************************************************
 
     
@@ -67,10 +68,12 @@ def test_route_utilities_validate_model_with_goal_invalid_id(client, one_goal):
     #Act & Assert
     with pytest.raises(HTTPException) as e:
         result_task = validate_model(Goal, "One")
+    response = e.value.get_response()
     
-    raise Exception("Complete test with assertion status code and response body")
+    # raise Exception("Complete test with assertion status code and response body")
     # *****************************************************************************
-    # **Complete test with assertion about status code response body***************
+    assert response.status_code == 400
+    assert response.get_json() == {"message": "Goal id (One) is invalid."}
     # *****************************************************************************
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -78,10 +81,12 @@ def test_route_utilities_validate_model_with_goal_missing_id(client, one_goal):
     #Act & Assert
     with pytest.raises(HTTPException) as e:
         result_task = validate_model(Goal, 4)
+    response = e.value.get_response()
     
-    raise Exception("Complete test with assertion status code and response body")
+    # raise Exception("Complete test with assertion status code and response body")
     # *****************************************************************************
-    # **Complete test with assertion about status code response body***************
+    assert response.status_code == 404
+    assert response.get_json() == {"message": "Goal with id (4) not found."}
     # *****************************************************************************
 
 # @pytest.mark.skip(reason="No way to test this feature yet")
@@ -144,8 +149,10 @@ def test_route_utilities_create_model_with_goal_missing_title(client):
     #Act
     with pytest.raises(HTTPException) as e:
         create_model(Goal, request_body)
+    response = e.value.get_response()
     
-    raise Exception("Complete test with assertion status code and response body")
+    # raise Exception("Complete test with assertion status code and response body")
     # *****************************************************************************
-    # **Complete test with assertion about status code response body***************
+    assert response.status_code == 400
+    assert response.get_json() == {"details": "Invalid data"}
     # *****************************************************************************
