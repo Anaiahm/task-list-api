@@ -2,8 +2,11 @@ from flask import Flask
 from .db import db, migrate
 from .models import task, goal
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from .routes.task_routes import task_list_bp
 from .routes.goal_routes import goal_list_bp
+
 
 def create_app(config=None):
     app = Flask(__name__)

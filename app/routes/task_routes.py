@@ -3,6 +3,9 @@ from app.models.task import Task
 from ..db import db
 from .routes_utilities import create_model, validate_model, get_models_with_filters
 from datetime import datetime
+import requests
+import os
+
 
 
 
@@ -53,6 +56,26 @@ def mark_task_complete(id):
 
 
     db.session.commit()
+    SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
+    slack_message_text = f"Someone just completed the task {task.title}"
+    slack_channel = "task-notifications"
+    slack_url = "https://slack.com/api/chat.postMessage"
+    headers = {
+        "Authorization": f"Bearer {SLACK_BOT_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    json = {
+        "channel": slack_channel,
+        "text": slack_message_text
+    }
+
+    response = requests.post(slack_url, headers=headers, json=json)
+    try:
+        requests.post(slack_url, headers=headers, json=json)
+        print(response.status_code, response.text)
+    except Exception as e:
+        print("Slack request failed:", e)
+
     return Response(status=204, mimetype="application/json")
 
 @task_list_bp.patch("/<id>/mark_incomplete") 

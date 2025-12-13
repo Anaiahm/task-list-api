@@ -62,6 +62,7 @@ Scroll down to "Scopes" and "Bot Token Scopes"
 
 Add `chat:write` and `chat:write.public` to "Bot Token Scopes"
 
+
 ![](assets/slackbot_scopes_populated.png)
 
 Scroll up, and click the button named "Install to Workspace."
